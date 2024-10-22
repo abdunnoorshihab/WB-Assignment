@@ -8,6 +8,8 @@ import { toast } from "react-toastify";
 import useUser from "../../Security/useUser";
 import useSmallScreen from "../../Hooks/useSmallScreen";
 
+import Courses from "../../Page/Courses/Courses";
+
 const NavbarTop = () => {
   const { open, setOpen, sidebarRef } = useContext(OrderContext);
   const [isSmallScreen] = useSmallScreen();
@@ -60,16 +62,12 @@ const NavbarTop = () => {
       setOpen(true);
     }
   }, [isSmallScreen, setOpen]);
-
-  // Example function to add an item to the cart
-  const addToCart = () => {
-    setCartCount(cartCount + 1); // Increase cart count
-    toast.success("Item added to cart!");
+  const handleCartClick = () => {
+    navigate("/cart"); 
   };
-
   return (
-    <div className="bg-white py-pt_primary text-_white w-full shadow-md border-b-1 ">
-      <ul className="flex gap-gap_primary justify-between px-pt_secondary ">
+    <div className="bg-white py-pt_primary text-_white w-full shadow-md border-b-1">
+      <ul className="flex gap-gap_primary justify-between px-pt_secondary">
         <div className="flex items-center gap-gap_primary text-text_sm font-semibold lg:hidden">
           <MdMenu
             onClick={() => setOpen(!open)}
@@ -96,43 +94,16 @@ const NavbarTop = () => {
 
             {/* Cart Icon with Count */}
             <div className="relative">
-              <FaShoppingCart className="text-2xl text-black cursor-pointer" />
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+              <FaShoppingCart className="text-2xl text-black cursor-pointer" onClick={handleCartClick}/>
+              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 py-1" >
                 {cartCount}
               </span>
             </div>
           </div>
-
-          <div className="absolute top-10 right-3 bg-_white shadow-md rounded-sm overflow-hidden pt-2 w-48 z-10 group-hover:scale-100 transition-transform duration-300 transform origin-top-right scale-0">
-            {userData && (
-              <Link
-                to="/profile"
-                className="block px-4 py-2 text-black hover:bg-bg_selected hover:text-white"
-              >
-                Profile
-              </Link>
-            )}
-            {userData ? (
-              <Link
-                onClick={handleLogout}
-                className="block px-4 py-2 text-black hover:bg-bg_selected hover:text-white"
-              >
-                Logout
-              </Link>
-            ) : (
-              <Link
-                to="/login"
-                className="block px-4 py-2 text-black hover:bg-bg_selected hover:text-white"
-              >
-                Login
-              </Link>
-            )}
-          </div>
         </div>
       </ul>
 
-      {/* Example button to add to cart (place this in the relevant part of your app) */}
-      
+      <Courses cartCount={cartCount} setCartCount={setCartCount}  />
     </div>
   );
 };
